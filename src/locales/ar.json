@@ -1,0 +1,261 @@
+{
+  "common": {
+    "appName": "DBForge",
+    "tagline": "مساحة عمل ERD وواجهات API",
+    "loading": "جاري التحميل…",
+    "project": "المشروع",
+    "language": "اللغة",
+    "english": "English",
+    "arabic": "العربية"
+  },
+  "nav": {
+    "main": "الرئيسية",
+    "thisProject": "هذا المشروع",
+    "dashboard": "لوحة التحكم",
+    "acceptInvite": "قبول الدعوة",
+    "notifications": "الإشعارات",
+    "account": "الحساب",
+    "logOut": "تسجيل الخروج",
+    "openMenu": "فتح القائمة",
+    "closeMenu": "إغلاق القائمة",
+    "overview": "نظرة عامة",
+    "whiteboard": "السبورة",
+    "apiDocs": "توثيق API",
+    "teamInvites": "الفريق والدعوات",
+    "comments": "التعليقات",
+    "activity": "النشاط",
+    "settings": "الإعدادات",
+    "reports": "تقارير المشاريع",
+    "projectReport": "تقرير المشروع",
+    "projects": "كل المشاريع"
+  },
+  "auth": {
+    "signIn": {
+      "title": "تسجيل الدخول",
+      "subtitle": "مرحبًا بعودتك — أدر مخططات ERD وتوثيق واجهات API مع فريقك.",
+      "email": "البريد الإلكتروني",
+      "password": "كلمة المرور",
+      "submit": "تسجيل الدخول",
+      "submitting": "جاري الدخول…",
+      "forgot": "نسيت كلمة المرور؟",
+      "noAccount": "ليس لديك حساب؟",
+      "createOne": "أنشئ حسابًا",
+      "error": "فشل تسجيل الدخول"
+    },
+    "register": {
+      "title": "إنشاء حساب",
+      "subtitle": "ابدأ مساحة عمل لتصميم قواعد البيانات وتوثيق واجهات API.",
+      "name": "الاسم",
+      "email": "البريد الإلكتروني",
+      "password": "كلمة المرور",
+      "hint": "استخدم 8 أحرف على الأقل.",
+      "submit": "إنشاء الحساب",
+      "submitting": "جاري الإنشاء…",
+      "hasAccount": "لديك حساب بالفعل؟",
+      "signIn": "تسجيل الدخول",
+      "error": "فشل التسجيل"
+    },
+    "forgot": {
+      "title": "إعادة تعيين كلمة المرور",
+      "subtitle": "أدخل بريد حسابك. في بيئة التطوير قد يعيد الخادم رمزًا يمكنك لصقه في صفحة الإعادة.",
+      "email": "البريد الإلكتروني",
+      "send": "إرسال رابط الإعادة",
+      "sending": "جاري الإرسال…",
+      "back": "العودة لتسجيل الدخول",
+      "devToken": "رمز التطوير",
+      "continueReset": "المتابعة لكلمة مرور جديدة",
+      "checkEmail": "تحقق من بريدك الإلكتروني.",
+      "error": "فشل الطلب"
+    },
+    "reset": {
+      "title": "اختر كلمة مرور جديدة",
+      "subtitle": "استخدم 8 أحرف على الأقل.",
+      "token": "رمز الإعادة",
+      "newPassword": "كلمة المرور الجديدة",
+      "submit": "تحديث كلمة المرور",
+      "saving": "جاري الحفظ…",
+      "signIn": "تسجيل الدخول",
+      "passwordUpdated": "تم تحديث كلمة المرور.",
+      "error": "فشلت إعادة التعيين"
+    }
+  },
+  "projectsPage": {
+    "title": "كل المشاريع",
+    "subtitle": "ابحث، صفِّ حسب المرحلة أو الظهور، وافتح مساحة عمل — أو أنشئ مشروعًا جديدًا.",
+    "addProject": "مشروع جديد",
+    "searchLabel": "البحث في المشاريع",
+    "searchPlaceholder": "ابحث بالاسم أو المسار أو الوصف…",
+    "filterStage": "المرحلة",
+    "filterVisibility": "الظهور",
+    "allStages": "كل المراحل",
+    "allVisibility": "الكل",
+    "resultsCount": "عرض {{count}} من {{total}} مشروعًا",
+    "loadError": "تعذر تحميل المشاريع",
+    "createError": "تعذر إنشاء المشروع",
+    "emptyTitle": "لا توجد مشاريع بعد",
+    "emptyBody": "أنشئ مشروعك الأول لبدء النمذجة وتوثيق واجهات API ودعوة فريقك.",
+    "noMatches": "لا توجد مشاريع تطابق البحث أو المرشحات.",
+    "openProject": "فتح",
+    "modalTitle": "مشروع جديد",
+    "modalSubtitle": "ستكون القائد ويمكنك دعوة الآخرين.",
+    "closeModal": "إغلاق",
+    "cancel": "إلغاء"
+  },
+  "dashboard": {
+    "title": "لوحة التحكم",
+    "subtitle": "مسار وصحة مساحات عملك. افتح قائمة المشاريع للبحث والتصفية والإنشاء.",
+    "newProject": "مشروع جديد",
+    "newProjectDesc": "ستكون القائد ويمكنك دعوة الآخرين.",
+    "name": "الاسم",
+    "description": "الوصف",
+    "visibility": "الظهور",
+    "private": "خاص",
+    "public": "عام",
+    "create": "إنشاء مشروع",
+    "creating": "جاري الإنشاء…",
+    "empty": "لا توجد مشاريع بعد. أنشئ مشروعًا من اليسار للبدء.",
+    "emptyTitle": "مرحبًا — لنضف مشروعًا",
+    "emptyBody": "ستظهر إحصاءات المسار هنا عند وجود مشاريع. أنشئ مشروعًا من صفحة المشاريع.",
+    "browseProjects": "كل المشاريع",
+    "manageProjects": "إدارة المشاريع",
+    "noDescription": "لا يوجد وصف",
+    "members": "{{count}} أعضاء",
+    "loadError": "تعذر تحميل المشاريع",
+    "createError": "تعذر إنشاء المشروع",
+    "reportsLink": "تقارير جميع المشاريع",
+    "pipelineTitle": "مسار المشاريع",
+    "pipelineSubtitle": "مراحل تلقائية من آخر نشاط ومحتوى ERD/API (لا يوجد حقل حالة يدوي).",
+    "chartTitle": "المشاريع حسب المرحلة",
+    "infoTitle": "كيف تُحسب المراحل",
+    "infoBody": "نمو: نشاط خلال أسبوع مع عمل واضح على النموذج أو API. قيد التنفيذ: يوجد جداول أو مسارات أو علاقات. انتظار: محتوى قليل أو هدوء أكثر من أسبوعين. متوقف: لا نشاط منذ أكثر من 30 يومًا.",
+    "stage": {
+      "growing": "نمو",
+      "in_progress": "قيد التنفيذ",
+      "waiting": "في الانتظار",
+      "stopped": "متوقف"
+    },
+    "stageHint": {
+      "growing": "نشط — تعديلات حديثة",
+      "in_progress": "قيد البناء",
+      "waiting": "هادئ / يحتاج متابعة",
+      "stopped": "ركود"
+    },
+    "countsShort": "{{tables}} جدول · {{routes}} API · {{rels}} علاقة",
+    "lastActivity": "آخر نشاط"
+  },
+  "notFound": {
+    "code": "404",
+    "title": "الصفحة غير موجودة",
+    "body": "المسار غير موجود أو ليس لديك صلاحية الوصول.",
+    "cta": "العودة للوحة التحكم"
+  },
+  "project": {
+    "layout": {
+      "loadError": "تعذر تحميل المشروع",
+      "notFound": "المشروع غير موجود",
+      "backDashboard": "العودة للوحة التحكم",
+      "youRole": "أنت: {{role}}",
+      "membersSlug": "{{count}} أعضاء · /{{slug}}"
+    },
+    "overview": {
+      "title": "نظرة عامة",
+      "subtitle": "انتقل للنمذجة أو التوثيق أو إعداد الفريق. دورك يحدد ما يمكنك تغييره.",
+      "open": "فتح",
+      "tiles": {
+        "whiteboardTitle": "السبورة",
+        "whiteboardDesc": "جداول ERD والأعمدة والعلاقات — مساحة النمذجة.",
+        "apiTitle": "توثيق API",
+        "apiDesc": "المجموعات والمسارات والمعاملات وأشكال الاستجابة.",
+        "teamTitle": "الفريق والدعوات",
+        "teamDesc": "أضف أعضاء بالبريد وأدر الأدوار.",
+        "commentsTitle": "التعليقات",
+        "commentsDesc": "نقاش متسلسل على الجداول والعلاقات والمسارات.",
+        "reportTitle": "تقرير المشروع الكامل",
+        "reportDesc": "نظرة تفاعلية مثل دليل ERD: إحصائيات، جداول، علاقات، مسارات API، والفريق."
+      },
+      "detailsTitle": "تفاصيل المشروع",
+      "slug": "المعرّف",
+      "visibility": "الظهور",
+      "description": "الوصف",
+      "dash": "—",
+      "activityTitle": "النشاط",
+      "activityDesc": "أحدث التغييرات في هذا المشروع.",
+      "viewAll": "عرض الكل",
+      "feedTitle": "فتح سجل النشاط",
+      "feedDesc": "شاهد من غيّر السبورة وتوثيق API والمزيد."
+    }
+  },
+  "presence": {
+    "alone": "لا يوجد أحد آخر يشاهد هذا المشروع الآن{{you}}.",
+    "youSuffix": " — أنت {{name}}",
+    "alsoHere": "أيضًا هنا:"
+  },
+  "roles": {
+    "LEADER": "قائد",
+    "EDITOR": "محرر",
+    "VIEWER": "عارض",
+    "COMMENTER": "معلق"
+  },
+  "report": {
+    "portfolio": {
+      "title": "تقارير المشاريع",
+      "subtitle": "ملخص لكل المشاريع التي أنت عضو فيها. افتح التقرير التفاعلي الكامل للمخطط والعلاقات وواجهات API والفريق.",
+      "open": "فتح التقرير الكامل",
+      "empty": "لا توجد مشاريع بعد.",
+      "generated": "تاريخ التوليد:",
+      "loadError": "تعذر تحميل التقارير"
+    },
+    "project": {
+      "loading": "جاري تحميل التقرير…",
+      "loadError": "فشل تحميل التقرير",
+      "errorTitle": "تعذر التحميل",
+      "retry": "إعادة المحاولة",
+      "exportMd": "تصدير Markdown",
+      "exporting": "جاري التصدير…",
+      "exportError": "فشل التصدير",
+      "tabs": {
+        "overview": "نظرة عامة على المشروع",
+        "erd": "مخطط قاعدة البيانات (ERD)",
+        "relations": "دليل علاقات الجداول",
+        "api": "API Routes",
+        "team": "الفريق"
+      },
+      "stats": {
+        "tables": "جداول",
+        "columns": "أعمدة",
+        "relations": "علاقات",
+        "apiRoutes": "مسارات API",
+        "members": "أعضاء",
+        "comments": "تعليقات"
+      },
+      "introNote": "المعرّف /{{slug}} · الظهور {{visibility}}. البيانات من مشروع DBForge (السبورة + كتالوج API).",
+      "sections": {
+        "domains": "مجموعات الجداول",
+        "sampleTables": "معاينة الجداول",
+        "roles": "الأدوار والأشخاص"
+      },
+      "groupMeta": "{{tables}} جدول · {{columns}} عمود",
+      "tableMeta": "{{cols}} عمود · {{rels}} علاقة",
+      "filterGroup": "فلتر المجموعة",
+      "all": "الكل",
+      "searchTables": "بحث في الجداول…",
+      "tablesCount": "جدول",
+      "relationsHint": "استعرض كل الروابط بين الجداول في شبكة قابلة للبحث.",
+      "openRelations": "فتح دليل علاقات الجداول",
+      "searchLabel": "بحث",
+      "searchRelations": "جزء من اسم جدول…",
+      "relationsCount": "علاقة",
+      "noApi": "لا يوجد توثيق API في هذا المشروع.",
+      "apiTotal": "إجمالي المسارات",
+      "apiStable": "مستقر",
+      "noTeam": "لا بيانات للفريق.",
+      "members": "الأعضاء",
+      "close": "إغلاق",
+      "columns": "الأعمدة",
+      "relationsBlock": "العلاقات",
+      "relOutgoing": "يشير إلى",
+      "relIncoming": "يُشار إليه من",
+      "generated": "تم التوليد:"
+    }
+  }
+}

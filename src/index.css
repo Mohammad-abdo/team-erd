@@ -1,0 +1,140 @@
+@import url("https://fonts.googleapis.com/css2?family=Alexandria:wght@300;400;500;600;700;800&display=swap");
+
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Alexandria", system-ui, "Segoe UI", Roboto, sans-serif;
+  --animate-fade-in: fade-in 0.4s ease-out both;
+  --animate-slide-up: slide-up 0.35s ease-out both;
+  --animate-scale-in: scale-in 0.25s ease-out both;
+  --animate-shimmer: shimmer 2s infinite linear;
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slide-up {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes scale-in {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+:root {
+  color-scheme: light;
+  --db-font-sans: "Alexandria", system-ui, "Segoe UI", Roboto, sans-serif;
+  --db-font-ar: "Alexandria", system-ui, "Segoe UI", Roboto, sans-serif;
+  --db-radius-lg: 0.75rem;
+  --db-radius-xl: 1rem;
+  --db-radius-2xl: 1.25rem;
+  --db-accent: #0d9488;
+  --db-accent-hover: #0f766e;
+  --db-surface: #f8fafc;
+  --db-border: #e2e8f0;
+  --db-danger: #dc2626;
+  --db-focus-ring: rgba(13, 148, 136, 0.4);
+}
+
+html,
+body {
+  font-family: var(--db-font-sans);
+}
+
+html[lang="ar"] body {
+  font-family: var(--db-font-ar);
+}
+
+*:focus-visible {
+  outline: 2px solid var(--db-accent);
+  outline-offset: 2px;
+}
+
+::selection {
+  background: rgba(13, 148, 136, 0.15);
+  color: #0f172a;
+}
+
+/* ── ERD whiteboard ─────────────────────────────────────────────────────── */
+
+/* Fill container */
+.react-flow__renderer,
+.react-flow__viewport,
+.react-flow__container {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* Node wrapper must not clip the card or its handles */
+.react-flow__node {
+  overflow: visible !important;
+}
+
+/* Edge paths */
+.react-flow__edge-path {
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* Make sure custom edge SVG elements are visible */
+.react-flow__edge {
+  overflow: visible !important;
+}
+.react-flow__edge path,
+.react-flow__edge polygon {
+  overflow: visible;
+}
+
+/* Edge labels */
+.react-flow__edge-textwrapper {
+  pointer-events: none;
+}
+
+/* Handles */
+.react-flow__handle {
+  transition: transform 0.15s;
+}
+.react-flow__handle:hover {
+  transform: translateY(-50%) scale(1.5) !important;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background:
+    radial-gradient(ellipse 120% 60% at 100% -20%, #f9fffe, transparent 60%),
+    radial-gradient(ellipse 80% 40% at 0% 100%, rgba(130, 130, 131, 0.05), transparent 55%),
+    radial-gradient(ellipse 50% 50% at 50% 0%, rgba(6, 182, 212, 0.04), transparent 70%),
+    linear-gradient(180deg, #ffffff 0%, var(--db-surface) 100%);
+  color: hsl(220, 33%, 98%);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Scrollbar refinement */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.4);
+  border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(100, 116, 139, 0.5);
+}

@@ -1,0 +1,239 @@
+{
+  "common": {
+    "appName": "DBForge",
+    "tagline": "ERD & API workspace",
+    "loading": "Loading…",
+    "project": "Project",
+    "language": "Language",
+    "english": "English",
+    "arabic": "Arabic"
+  },
+  "nav": {
+    "main": "Main",
+    "thisProject": "This project",
+    "dashboard": "Dashboard",
+    "acceptInvite": "Accept invite",
+    "notifications": "Notifications",
+    "account": "Account",
+    "logOut": "Log out",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu",
+    "overview": "Overview",
+    "whiteboard": "Whiteboard",
+    "apiDocs": "API docs",
+    "teamInvites": "Team & invites",
+    "comments": "Comments",
+    "activity": "Activity",
+    "settings": "Settings",
+    "reports": "All reports",
+    "projectReport": "Full report",
+    "projects": "All projects"
+  },
+  "auth": {
+    "signIn": {
+      "title": "Sign in",
+      "subtitle": "Welcome back — manage ERDs and API docs with your team.",
+      "email": "Email",
+      "password": "Password",
+      "submit": "Sign in",
+      "submitting": "Signing in…",
+      "forgot": "Forgot password?",
+      "noAccount": "No account?",
+      "createOne": "Create one",
+      "error": "Login failed"
+    },
+    "register": {
+      "title": "Create account",
+      "subtitle": "Start a workspace for database design and API documentation.",
+      "name": "Name",
+      "email": "Email",
+      "password": "Password",
+      "hint": "Use at least 8 characters.",
+      "submit": "Create account",
+      "submitting": "Creating…",
+      "hasAccount": "Already have an account?",
+      "signIn": "Sign in",
+      "error": "Registration failed"
+    },
+    "forgot": {
+      "title": "Reset password",
+      "subtitle": "Enter your account email. In development, the API may return a token you can paste on the reset page.",
+      "email": "Email",
+      "send": "Send reset link",
+      "sending": "Sending…",
+      "back": "Back to sign in",
+      "devToken": "Development token",
+      "continueReset": "Continue to new password",
+      "checkEmail": "Check your email.",
+      "error": "Request failed"
+    },
+    "reset": {
+      "title": "Choose a new password",
+      "subtitle": "Use at least 8 characters.",
+      "token": "Reset token",
+      "newPassword": "New password",
+      "submit": "Update password",
+      "saving": "Saving…",
+      "signIn": "Sign in",
+      "passwordUpdated": "Password updated.",
+      "error": "Reset failed"
+    }
+  },
+  "dashboard": {
+    "title": "Projects",
+    "subtitle": "Open a project to edit the ERD, API catalog, and collaborate with your team.",
+    "newProject": "New project",
+    "newProjectDesc": "You will be the leader and can invite others.",
+    "name": "Name",
+    "description": "Description",
+    "visibility": "Visibility",
+    "private": "Private",
+    "public": "Public",
+    "create": "Create project",
+    "creating": "Creating…",
+    "empty": "No projects yet. Create one on the left to get started.",
+    "emptyTitle": "Welcome — let’s add a project",
+    "emptyBody": "Your dashboard will show pipeline stats once you have projects. Create one from the projects page.",
+    "browseProjects": "All projects",
+    "manageProjects": "Manage projects",
+    "noDescription": "No description",
+    "members": "{{count}} members",
+    "loadError": "Failed to load projects",
+    "createError": "Could not create project",
+    "reportsLink": "All project reports",
+    "pipelineTitle": "Project pipeline",
+    "pipelineSubtitle": "Automatic stages from recent activity and ERD/API content (no manual status field).",
+    "chartTitle": "Projects by stage",
+    "infoTitle": "How stages work",
+    "infoBody": "Growing: active in the last week with solid model/API work. In progress: has tables, routes, or relations. Waiting: little content or quiet for 2+ weeks. Stopped: no activity for over 30 days.",
+    "stage": {
+      "growing": "Growing",
+      "in_progress": "In progress",
+      "waiting": "Waiting",
+      "stopped": "Stopped"
+    },
+    "stageHint": {
+      "growing": "Hot — recent edits",
+      "in_progress": "Building",
+      "waiting": "Quiet / needs attention",
+      "stopped": "Stale"
+    },
+    "countsShort": "{{tables}} tbl · {{routes}} API · {{rels}} rel",
+    "lastActivity": "Last activity"
+  },
+  "notFound": {
+    "code": "404",
+    "title": "Page not found",
+    "body": "The route does not exist or you may not have access.",
+    "cta": "Back to dashboard"
+  },
+  "project": {
+    "layout": {
+      "loadError": "Could not load project",
+      "notFound": "Project not found",
+      "backDashboard": "Back to dashboard",
+      "youRole": "You: {{role}}",
+      "membersSlug": "{{count}} members · /{{slug}}"
+    },
+    "overview": {
+      "title": "Overview",
+      "subtitle": "Jump into modeling, docs, or team setup. Your role controls what you can change.",
+      "open": "Open",
+      "tiles": {
+        "whiteboardTitle": "Whiteboard",
+        "whiteboardDesc": "ERD tables, columns, and relations — your modeling workspace.",
+        "apiTitle": "API documentation",
+        "apiDesc": "Groups, routes, parameters, and response shapes.",
+        "teamTitle": "Team & invites",
+        "teamDesc": "Add members by email and manage roles.",
+        "commentsTitle": "Comments",
+        "commentsDesc": "Threaded discussion on tables, relations, and routes.",
+        "reportTitle": "Full project report",
+        "reportDesc": "Interactive overview like ERD guide: stats, tables, relations, API routes, and team."
+      },
+      "detailsTitle": "Project details",
+      "slug": "Slug",
+      "visibility": "Visibility",
+      "description": "Description",
+      "dash": "—",
+      "activityTitle": "Activity",
+      "activityDesc": "Recent changes across this project.",
+      "viewAll": "View all",
+      "feedTitle": "Open activity feed",
+      "feedDesc": "See who changed the whiteboard, API docs, and more."
+    }
+  },
+  "presence": {
+    "alone": "No one else is viewing this project right now{{you}}.",
+    "youSuffix": " — you're {{name}}",
+    "alsoHere": "Also here:"
+  },
+  "roles": {
+    "LEADER": "Leader",
+    "EDITOR": "Editor",
+    "VIEWER": "Viewer",
+    "COMMENTER": "Commenter"
+  },
+  "report": {
+    "portfolio": {
+      "title": "Project reports",
+      "subtitle": "Summary of every project you belong to. Open the interactive full report for ERD, relations, API, and team.",
+      "open": "Open full report",
+      "empty": "You have no projects yet.",
+      "generated": "Generated:",
+      "loadError": "Could not load portfolio"
+    },
+    "project": {
+      "loading": "Loading report…",
+      "loadError": "Failed to load report",
+      "errorTitle": "Could not load",
+      "retry": "Retry",
+      "exportMd": "Export Markdown",
+      "exporting": "Exporting…",
+      "exportError": "Export failed",
+      "tabs": {
+        "overview": "Overview",
+        "erd": "Database diagram (ERD)",
+        "relations": "Table relations guide",
+        "api": "API routes",
+        "team": "Team"
+      },
+      "stats": {
+        "tables": "Tables",
+        "columns": "Columns",
+        "relations": "Relations",
+        "apiRoutes": "API routes",
+        "members": "Members",
+        "comments": "Comments"
+      },
+      "introNote": "Slug /{{slug}} · visibility {{visibility}}. Data comes from your DBForge project (whiteboard + API catalog).",
+      "sections": {
+        "domains": "Table groups",
+        "sampleTables": "Tables preview",
+        "roles": "Roles & people"
+      },
+      "groupMeta": "{{tables}} tables · {{columns}} columns",
+      "tableMeta": "{{cols}} columns · {{rels}} relations",
+      "filterGroup": "Group filter",
+      "all": "All",
+      "searchTables": "Search tables…",
+      "tablesCount": "tables",
+      "relationsHint": "Browse every FK-style link in a searchable grid.",
+      "openRelations": "Open relations guide",
+      "searchLabel": "Search",
+      "searchRelations": "Part of a table name…",
+      "relationsCount": "relations",
+      "noApi": "No API documentation in this project.",
+      "apiTotal": "Total routes",
+      "apiStable": "Stable",
+      "noTeam": "No team data.",
+      "members": "Members",
+      "close": "Close",
+      "columns": "Columns",
+      "relationsBlock": "Relations",
+      "relOutgoing": "References",
+      "relIncoming": "Referenced by",
+      "generated": "Generated:"
+    }
+  }
+}
