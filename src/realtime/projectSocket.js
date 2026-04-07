@@ -1,24 +1,9 @@
 import { io } from "socket.io-client";
 import { getAccessToken } from "../lib/authStorage.js";
+import { getSocketConfig } from "../lib/apiConfig.js";
 
 /** @type {import("socket.io-client").Socket | null} */
 let socketInstance = null;
-
-/**
- * Socket.io server URL.
- * - Default: same origin (Vite proxies /socket.io → API in dev).
- * - Set VITE_API_ORIGIN=http://localhost:4000 if the proxy/WebSocket path misbehaves.
- */
-function socketUrl() {
-  if (typeof window === "undefined") {
-    return "";
-  }
-  const explicit = import.meta.env.VITE_API_ORIGIN;
-  if (typeof explicit === "string" && explicit.trim() !== "") {
-    return explicit.replace(/\/$/, "");
-  }
-  return window.location.origin;
-}
 
 /**
  * Returns connected socket, or null if no access token.
@@ -40,8 +25,9 @@ export function connectProjectSocket() {
     return socketInstance;
   }
 
-  socketInstance = io(socketUrl(), {
-    path: "/socket.io",
+  const { url, path } = getSocketConfig();
+  socketInstance = io(url || (typeof window !== "undefined" ? window.location.origin : ""), {
+    path,
     autoConnect: true,
     auth: { token },
     withCredentials: true,

@@ -1,14 +1,17 @@
 import axios from "axios";
+import { getApiBaseURL } from "../lib/apiConfig.js";
 import { clearTokens, getAccessToken, getRefreshToken, setTokens } from "../lib/authStorage.js";
 import { updateSocketAuthToken } from "../realtime/projectSocket.js";
 
+const baseURL = getApiBaseURL();
+
 export const api = axios.create({
-  baseURL: "/api",
+  baseURL,
   withCredentials: true,
 });
 
 const refreshClient = axios.create({
-  baseURL: "/api",
+  baseURL,
   withCredentials: true,
 });
 

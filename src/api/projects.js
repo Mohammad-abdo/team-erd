@@ -1,3 +1,4 @@
+import { getExportApiBase } from "../lib/apiConfig.js";
 import { api } from "./client.js";
 
 export function listProjects() {
@@ -157,11 +158,15 @@ export function importPostman(projectId, payload) {
 }
 
 export function getExportSwaggerUrl(projectId, token) {
-  return `/api/projects/${projectId}/export/swagger?token=${token}`;
+  const base = getExportApiBase();
+  const q = new URLSearchParams({ token: String(token) });
+  return `${base}/projects/${projectId}/export/swagger?${q}`;
 }
 
 export function getExportPostmanUrl(projectId, token) {
-  return `/api/projects/${projectId}/export/postman?token=${token}`;
+  const base = getExportApiBase();
+  const q = new URLSearchParams({ token: String(token) });
+  return `${base}/projects/${projectId}/export/postman?${q}`;
 }
 
 export function exportSwagger(projectId) {
