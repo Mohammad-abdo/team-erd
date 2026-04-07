@@ -80,6 +80,14 @@ export function deleteErdRelation(projectId, relationId) {
   return api.delete(`/projects/${projectId}/erd/relations/${relationId}`);
 }
 
+export function getApiTestSettings(projectId) {
+  return api.get(`/projects/${projectId}/api/test-settings`);
+}
+
+export function saveApiTestSettings(projectId, payload) {
+  return api.put(`/projects/${projectId}/api/test-settings`, payload);
+}
+
 export function getApiGroups(projectId) {
   return api.get(`/projects/${projectId}/api/groups`);
 }

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Link, useOutletContext, useParams } from "react-router-dom";
 import {
   AlertCircle,
@@ -38,8 +38,10 @@ import {
   exportPostman,
   exportSwagger,
   getApiGroups,
+  getApiTestSettings,
   importPostman,
   importSwagger,
+  saveApiTestSettings,
   updateApiGroup,
   updateApiParameter,
   updateApiResponse,
@@ -172,7 +174,7 @@ function ResponseRow({ resp, canEdit, onUpdate, onDelete }) {
   );
 }
 
-function RouteCard({ route, group, projectId, canEdit, onReload, onError }) {
+function RouteCard({ route, group, projectId, canEdit, onReload, onError, testSettings }) {
   const [expanded, setExpanded] = useState(false);
   const [editing, setEditing] = useState(false);
   const [form, setForm] = useState({});
@@ -183,10 +185,6 @@ function RouteCard({ route, group, projectId, canEdit, onReload, onError }) {
   const [newResp, setNewResp] = useState({ statusCode: 200, description: "", exampleJson: "" });
 
   const [testOpen, setTestOpen] = useState(false);
-  const [baseUrl, setBaseUrl] = useState(() => localStorage.getItem("dbforge_base_url") || "http://localhost:3000");
-  const [testHeaders, setTestHeaders] = useState(() => {
-    try { return JSON.parse(localStorage.getItem("dbforge_test_headers") || "[]"); } catch { return []; }
-  });
   const [testBody, setTestBody] = useState("");
   const [testResult, setTestResult] = useState(null);
   const [testBusy, setTestBusy] = useState(false);
@@ -252,8 +250,10 @@ function RouteCard({ route, group, projectId, canEdit, onReload, onError }) {
 
   async function runTest() {
     setTestBusy(true); setTestResult(null);
-    localStorage.setItem("dbforge_base_url", baseUrl);
-    localStorage.setItem("dbforge_test_headers", JSON.stringify(testHeaders));
+
+    const baseUrl = testSettings.baseUrl || "http://localhost:3000";
+    const token = testSettings.authToken || "";
+    const globalHeaders = Array.isArray(testSettings.headers) ? testSettings.headers : [];
 
     let fullPath = route.path;
     (route.parameters ?? []).filter((p) => p.location === "PATH").forEach((p) => {
@@ -267,7 +267,8 @@ function RouteCard({ route, group, projectId, canEdit, onReload, onError }) {
     });
 
     const headers = {};
-    testHeaders.forEach((h) => { if (h.key && h.value) headers[h.key] = h.value; });
+    if (token.trim()) headers["Authorization"] = `Bearer ${token.trim()}`;
+    globalHeaders.forEach((h) => { if (h.key && h.value) headers[h.key] = h.value; });
     (route.parameters ?? []).filter((p) => p.location === "HEADER").forEach((p) => {
       if (p.example && !headers[p.name]) headers[p.name] = p.example;
     });
@@ -286,10 +287,6 @@ function RouteCard({ route, group, projectId, canEdit, onReload, onError }) {
       setTestResult({ status: 0, statusText: "Network Error", elapsed: Math.round(performance.now() - startMs), body: err.message, ok: false });
     } finally { setTestBusy(false); }
   }
-
-  function addHeader() { setTestHeaders([...testHeaders, { key: "", value: "" }]); }
-  function removeHeader(i) { setTestHeaders(testHeaders.filter((_, j) => j !== i)); }
-  function updateHeader(i, field, val) { setTestHeaders(testHeaders.map((h, j) => j === i ? { ...h, [field]: val } : h)); }
 
   return (
     <div className={`rounded-xl border ${mc.border} bg-zinc-900/60 transition-all duration-200 hover:bg-zinc-900/80`}>
@@ -393,32 +390,31 @@ function RouteCard({ route, group, projectId, canEdit, onReload, onError }) {
             </button>
             {testOpen ? (
               <div className="mt-3 space-y-3 rounded-xl border border-teal-500/20 bg-zinc-800/40 p-4">
-                <div className="space-y-2">
-                  <label className="text-[11px] font-semibold text-zinc-400 uppercase tracking-wider">Base URL</label>
-                  <div className="flex items-center gap-2">
-                    <Globe className="h-4 w-4 shrink-0 text-zinc-500" />
-                    <DarkInput value={baseUrl} onChange={(e) => setBaseUrl(e.target.value)} placeholder="http://localhost:3000" />
-                  </div>
+                {/* Computed URL preview */}
+                <div className="flex items-center gap-2 rounded-lg bg-zinc-900/80 px-3 py-2 text-xs">
+                  <span className={`shrink-0 rounded px-1.5 py-0.5 font-bold uppercase ${methodColor(route.method).bg} ${methodColor(route.method).text}`}>{route.method}</span>
+                  <code className="min-w-0 flex-1 truncate text-zinc-300">{(testSettings.baseUrl || "http://localhost:3000")}{(group.prefix ?? "") + route.path}</code>
+                  {(testSettings.authToken || "").trim() ? <Lock className="h-3 w-3 shrink-0 text-amber-400" title="Bearer token attached" /> : null}
                 </div>
-                <div className="space-y-2">
-                  <div className="flex items-center justify-between">
-                    <label className="text-[11px] font-semibold text-zinc-400 uppercase tracking-wider">Headers</label>
-                    <IconBtn onClick={addHeader}><Plus className="h-3 w-3" /></IconBtn>
-                  </div>
-                  {testHeaders.map((h, i) => (
-                    <div key={i} className="flex gap-2">
-                      <DarkInput value={h.key} onChange={(e) => updateHeader(i, "key", e.target.value)} placeholder="Key" className="flex-1" />
-                      <DarkInput value={h.value} onChange={(e) => updateHeader(i, "value", e.target.value)} placeholder="Value" className="flex-1" />
-                      <IconBtn danger onClick={() => removeHeader(i)}><Minus className="h-3 w-3" /></IconBtn>
-                    </div>
-                  ))}
-                </div>
+
+                {/* Body input — for POST, PUT, PATCH */}
                 {!["GET", "DELETE"].includes(route.method) ? (
-                  <div className="space-y-1">
-                    <label className="text-[11px] font-semibold text-zinc-400 uppercase tracking-wider">Body (JSON)</label>
-                    <DarkTextarea rows={4} value={testBody} onChange={(e) => setTestBody(e.target.value)} placeholder='{"key": "value"}' className="font-mono text-xs" />
+                  <div className="space-y-2">
+                    <label className="text-[11px] font-semibold text-zinc-400 uppercase tracking-wider">Request Body (JSON)</label>
+                    <DarkTextarea
+                      rows={6}
+                      value={testBody}
+                      onChange={(e) => setTestBody(e.target.value)}
+                      placeholder={'{\n  "key": "value",\n  "name": "example"\n}'}
+                      className="font-mono text-xs"
+                    />
+                    {testBody.trim() ? (() => {
+                      try { JSON.parse(testBody); return <p className="flex items-center gap-1.5 text-[10px] text-emerald-400"><Check className="h-3 w-3" />Valid JSON</p>; }
+                      catch { return <p className="flex items-center gap-1.5 text-[10px] text-red-400"><AlertCircle className="h-3 w-3" />Invalid JSON</p>; }
+                    })() : null}
                   </div>
                 ) : null}
+
                 <Button onClick={runTest} disabled={testBusy} className="w-full">
                   {testBusy ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}
                   {testBusy ? "Sending..." : "Send Request"}
@@ -442,7 +438,7 @@ function RouteCard({ route, group, projectId, canEdit, onReload, onError }) {
   );
 }
 
-function GroupCard({ group, projectId, canEdit, onReload, onError }) {
+function GroupCard({ group, projectId, canEdit, onReload, onError, testSettings }) {
   const [open, setOpen] = useState(true);
   const [editing, setEditing] = useState(false);
   const [form, setForm] = useState({});
@@ -529,7 +525,7 @@ function GroupCard({ group, projectId, canEdit, onReload, onError }) {
           ) : null}
           {group.routes?.length ? (
             <div className="space-y-2">
-              {group.routes.map((route) => <RouteCard key={route.id} route={route} group={group} projectId={projectId} canEdit={canEdit} onReload={onReload} onError={onError} />)}
+              {group.routes.map((route) => <RouteCard key={route.id} route={route} group={group} projectId={projectId} canEdit={canEdit} onReload={onReload} onError={onError} testSettings={testSettings} />)}
             </div>
           ) : <p className="text-xs text-zinc-600">No routes in this group yet.</p>}
         </div>
@@ -544,6 +540,41 @@ export default function ApiDocsPage() {
   const [groups, setGroups] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+
+  const [testSettings, setTestSettings] = useState({ baseUrl: "http://localhost:3000", authToken: "", headers: [], body: "" });
+  const saveTimer = useRef(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    getApiTestSettings(projectId).then(({ data }) => {
+      if (!cancelled) {
+        const s = data.settings ?? {};
+        setTestSettings({
+          baseUrl: s.baseUrl || "http://localhost:3000",
+          authToken: s.authToken || "",
+          headers: Array.isArray(s.headers) ? s.headers : [],
+          body: s.body || "",
+        });
+      }
+    }).catch(() => {});
+    return () => { cancelled = true; };
+  }, [projectId]);
+
+  const handleTestSettingsChange = useCallback((patch) => {
+    setTestSettings((prev) => {
+      const next = { ...prev, ...patch };
+      clearTimeout(saveTimer.current);
+      saveTimer.current = setTimeout(() => { saveApiTestSettings(projectId, next).catch(() => {}); }, 600);
+      return next;
+    });
+  }, [projectId]);
+
+  const [globalSettingsOpen, setGlobalSettingsOpen] = useState(true);
+  const [globalTab, setGlobalTab] = useState("auth");
+
+  function addGlobalHeader() { handleTestSettingsChange({ headers: [...(testSettings.headers || []), { key: "", value: "" }] }); }
+  function removeGlobalHeader(i) { handleTestSettingsChange({ headers: (testSettings.headers || []).filter((_, j) => j !== i) }); }
+  function updateGlobalHeader(i, field, val) { handleTestSettingsChange({ headers: (testSettings.headers || []).map((h, j) => j === i ? { ...h, [field]: val } : h) }); }
 
   const [showNewGroup, setShowNewGroup] = useState(false);
   const [gName, setGName] = useState("");
@@ -774,6 +805,111 @@ export default function ApiDocsPage() {
           </div>
         ) : null}
 
+        {/* ── Global Test Settings (like Postman collection-level) ── */}
+        <div className="mb-6 rounded-2xl border border-zinc-800/60 bg-zinc-900/50 backdrop-blur-sm overflow-hidden">
+          <button
+            type="button"
+            onClick={() => setGlobalSettingsOpen(!globalSettingsOpen)}
+            className="flex w-full items-center gap-3 px-5 py-3.5 transition-colors hover:bg-white/[0.02]"
+          >
+            {globalSettingsOpen ? <ChevronDown className="h-4 w-4 text-zinc-500" /> : <ChevronRight className="h-4 w-4 text-zinc-500" />}
+            <Settings2 className="h-4 w-4 text-teal-400" />
+            <span className="text-sm font-bold text-zinc-100">Global Test Settings</span>
+            <span className="text-[10px] text-zinc-600">Applies to all routes</span>
+            <div className="ms-auto flex items-center gap-2">
+              {(testSettings.authToken || "").trim() ? (
+                <span className="flex items-center gap-1 rounded-full bg-emerald-500/10 px-2 py-0.5 text-[10px] font-semibold text-emerald-400 ring-1 ring-emerald-500/20">
+                  <Lock className="h-2.5 w-2.5" />Auth
+                </span>
+              ) : (
+                <span className="flex items-center gap-1 rounded-full bg-zinc-800 px-2 py-0.5 text-[10px] font-semibold text-zinc-500">
+                  <Lock className="h-2.5 w-2.5" />No Auth
+                </span>
+              )}
+              {(testSettings.headers || []).length > 0 ? (
+                <span className="rounded-full bg-zinc-800 px-2 py-0.5 text-[10px] font-semibold text-zinc-400">{testSettings.headers.length} header{testSettings.headers.length > 1 ? "s" : ""}</span>
+              ) : null}
+            </div>
+          </button>
+
+          {globalSettingsOpen ? (
+            <div className="border-t border-zinc-800/60 px-5 py-4 space-y-4">
+              {/* Base URL */}
+              <div className="space-y-1.5">
+                <label className="text-[11px] font-semibold text-zinc-400 uppercase tracking-wider">Base URL</label>
+                <div className="flex items-center gap-2">
+                  <Globe className="h-4 w-4 shrink-0 text-zinc-500" />
+                  <DarkInput value={testSettings.baseUrl || ""} onChange={(e) => handleTestSettingsChange({ baseUrl: e.target.value })} placeholder="http://localhost:3000" />
+                </div>
+              </div>
+
+              {/* Tabs: Auth | Headers */}
+              <div className="flex gap-0 border-b border-zinc-700/40">
+                {[
+                  { id: "auth", label: "Authorization", icon: <Lock className="h-3 w-3" /> },
+                  { id: "headers", label: "Headers", icon: <Settings2 className="h-3 w-3" />, count: (testSettings.headers || []).length },
+                ].map((tab) => (
+                  <button
+                    key={tab.id}
+                    type="button"
+                    onClick={() => setGlobalTab(tab.id)}
+                    className={`flex items-center gap-1.5 px-4 py-2.5 text-xs font-semibold transition-colors border-b-2 -mb-px ${globalTab === tab.id ? "border-teal-400 text-teal-400" : "border-transparent text-zinc-500 hover:text-zinc-300"}`}
+                  >
+                    {tab.icon}
+                    {tab.label}
+                    {tab.count ? <span className="rounded-full bg-zinc-700/60 px-1.5 py-0.5 text-[9px] font-bold text-zinc-300">{tab.count}</span> : null}
+                  </button>
+                ))}
+              </div>
+
+              {/* Auth content */}
+              {globalTab === "auth" ? (
+                <div className="space-y-2">
+                  <label className="text-[11px] font-semibold text-zinc-400 uppercase tracking-wider">Bearer Token</label>
+                  <p className="text-[10px] text-zinc-600">Sent as <code className="rounded bg-zinc-800 px-1 py-0.5 text-zinc-400">Authorization: Bearer &lt;token&gt;</code> with every request</p>
+                  <div className="flex items-center gap-2">
+                    <Lock className="h-4 w-4 shrink-0 text-amber-400/60" />
+                    <DarkInput
+                      value={testSettings.authToken || ""}
+                      onChange={(e) => handleTestSettingsChange({ authToken: e.target.value })}
+                      placeholder="Paste your JWT or API token here..."
+                      type="password"
+                    />
+                    {(testSettings.authToken || "").trim() ? (
+                      <IconBtn onClick={() => handleTestSettingsChange({ authToken: "" })} title="Clear token"><X className="h-3.5 w-3.5" /></IconBtn>
+                    ) : null}
+                  </div>
+                  {(testSettings.authToken || "").trim() ? (
+                    <p className="flex items-center gap-1.5 text-[10px] text-emerald-400"><Check className="h-3 w-3" />Token set — included in all requests</p>
+                  ) : (
+                    <p className="text-[10px] text-zinc-600">No token — requests sent without authorization</p>
+                  )}
+                </div>
+              ) : null}
+
+              {/* Headers content */}
+              {globalTab === "headers" ? (
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between">
+                    <label className="text-[11px] font-semibold text-zinc-400 uppercase tracking-wider">Custom Headers</label>
+                    <IconBtn onClick={addGlobalHeader}><Plus className="h-3.5 w-3.5" /></IconBtn>
+                  </div>
+                  {(testSettings.headers || []).length === 0 ? (
+                    <p className="text-[10px] text-zinc-600">No custom headers. Click + to add one.</p>
+                  ) : null}
+                  {(testSettings.headers || []).map((h, i) => (
+                    <div key={i} className="flex gap-2">
+                      <DarkInput value={h.key} onChange={(e) => updateGlobalHeader(i, "key", e.target.value)} placeholder="Header name" className="flex-1" />
+                      <DarkInput value={h.value} onChange={(e) => updateGlobalHeader(i, "value", e.target.value)} placeholder="Value" className="flex-1" />
+                      <IconBtn danger onClick={() => removeGlobalHeader(i)}><Minus className="h-3 w-3" /></IconBtn>
+                    </div>
+                  ))}
+                </div>
+              ) : null}
+            </div>
+          ) : null}
+        </div>
+
         {showNewGroup ? (
           <form className="mb-6 space-y-3 rounded-2xl border border-zinc-800/60 bg-zinc-900/50 p-5" onSubmit={onCreateGroup}>
             <h2 className="text-sm font-bold text-zinc-200">Create Route Group</h2>
@@ -790,7 +926,7 @@ export default function ApiDocsPage() {
           <div className="flex items-center justify-center py-20"><Spinner className="h-10 w-10" /></div>
         ) : (
           <div className="space-y-4">
-            {groups.map((g) => <GroupCard key={g.id} group={g} projectId={projectId} canEdit={canEdit} onReload={load} onError={setError} />)}
+            {groups.map((g) => <GroupCard key={g.id} group={g} projectId={projectId} canEdit={canEdit} onReload={load} onError={setError} testSettings={testSettings} />)}
             {groups.length === 0 ? (
               <div className="flex flex-col items-center py-20 text-center">
                 <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-zinc-800/80"><Code2 className="h-7 w-7 text-zinc-600" /></div>

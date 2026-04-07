@@ -218,7 +218,7 @@ function AppSidebar({ user, onLogout, mobileOpen, onCloseMobile }) {
       />
 
       <aside
-        className={`flex w-[min(100vw-3rem,18rem)] shrink-0 flex-col border-e border-white/[0.06] bg-gradient-to-b from-zinc-900 via-zinc-900 to-zinc-950 shadow-2xl shadow-black/40 transition-transform duration-300 ease-out max-lg:fixed max-lg:inset-y-0 max-lg:start-0 max-lg:z-50 max-lg:min-h-dvh lg:static lg:z-auto lg:min-h-dvh lg:w-64 xl:w-72 ${
+        className={`flex w-[min(100vw-3rem,18rem)] shrink-0 flex-col border-e border-white/[0.06] bg-gradient-to-b from-zinc-900 via-zinc-900 to-zinc-950 shadow-2xl shadow-black/40 transition-transform duration-300 ease-out max-lg:fixed max-lg:inset-y-0 max-lg:start-0 max-lg:z-50 max-lg:min-h-dvh lg:static lg:z-auto lg:h-full lg:w-64 xl:w-72 ${
           mobileOpen
             ? "max-lg:translate-x-0"
             : "max-lg:ltr:-translate-x-full max-lg:rtl:translate-x-full"

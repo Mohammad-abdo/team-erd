@@ -102,7 +102,7 @@ export function AppLayout() {
   }
 
   return (
-    <div className={`flex min-h-dvh items-stretch ${isWhiteboard ? "bg-zinc-950" : ""}`}>
+    <div className={`flex h-dvh overflow-hidden ${isWhiteboard ? "bg-zinc-950" : ""}`}>
       {!hideGlobalNav ? (
         <AppSidebar
           user={user}

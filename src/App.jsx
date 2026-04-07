@@ -37,8 +37,8 @@ export default function App() {
     <Routes>
       <Route path="/project/:projectId/*" element={<OldProjectRedirect />} />
 
+      <Route path="/auth/login" element={<LoginPage />} />
       <Route path="/auth" element={<AuthLayout />}>
-        <Route path="login" element={<LoginPage />} />
         <Route path="register" element={<RegisterPage />} />
         <Route path="forgot-password" element={<ForgotPasswordPage />} />
         <Route path="reset-password" element={<ResetPasswordPage />} />
